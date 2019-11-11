@@ -10,9 +10,14 @@ def getCurrentSong(token):
     sp = spotipy.Spotify(auth=token)
 
     current_song = sp.currently_playing()
-    artist = current_song['item']['artists'][0]['name']
-    song_name = current_song['item']['name']
-    return artist, song_name
+    # check if none
+    if current_song is not None:
+        artist = current_song['item']['artists'][0]['name']
+        song_name = current_song['item']['name']
+        return artist, song_name
+    else:
+        print("There is no song currently playing")
+        sys.exit()
 
 def getSpotifyToken():
     token = util.prompt_for_user_token(
@@ -22,6 +27,7 @@ def getSpotifyToken():
         return token
     except:
         print("Can't get token for user: {}".format(USERNAME))
+        sys.exit()
 
 def removeParentheses(dataString):
     pos1 = dataString.find('(')
@@ -79,6 +85,7 @@ def getLyrics(song_url):
 
     else:
         print("Sorry, I can't find the actual song")
+        sys.exit()
 
 def main():
     token = getSpotifyToken()
