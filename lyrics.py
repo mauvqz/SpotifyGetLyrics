@@ -53,7 +53,10 @@ def cleanSongInfo(artist, song_name):
         clean_song = clean_song.replace(x,'')
 
     clean_artist = removeParentheses(clean_artist)
-    clean_song = cleanParentheses(clean_song)
+    if '(feat' or '(with' in clean_song:
+        clean_song = removeParentheses(clean_song)
+    else:
+        clean_song = cleanParentheses(clean_song)
     
     return clean_artist, clean_song
 
@@ -63,6 +66,8 @@ def createSongUrl(artist, song_name, showUrl=False):
     artist2url = clean_artist.replace(" ", "-")
     song2url = clean_song.replace(" ", "-")
     song_url = '{}-{}-lyrics'.format(artist2url, song2url)
+
+    song_url = song_url.replace('--', '-')
 
     print('\nSong: {}\nArtist: {}'.format(song_name, artist))
 
